@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:insert="index::encabezado">
+
+</head>
+
+<body background="https://www.auladelafarmacia.com/wp-content/uploads/2021/04/hipertension1.jpg">
+
+	<nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-dark bg-dark">
+		<div class="container-fluid">
+
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+				data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+				aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+					<li class="nav-item"><a class="nav-link active" aria-current="page" th:href="@{/}">Home</a></li>
+					<li class="nav-item"><a class="nav-link" th:href="@{/}">Ejercicios </a></li>
+					<li class="nav-item"><a class="nav-link" th:href="@{/}">Que consumo? </a></li>
+					<li class="nav-item"><a class="nav-link" th:href="@{/usuario/logout}">Cerrar Sesi&oacute;n</a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+ <div id="contenedor" class="container">
+		<div class="row">
+			 <div class="col-sm-3 mx-auto">	
+			 
+				<h2 style="color:red;"> Calculo de IMC</h2> <br> 
+				<form id="forma-calculo" th:action="@{/usuario/registro}" method="get">
+              <br>
+					<div class="card">
+						<div class="card-body">
+							<div class="form-label-group">
+								<input id="peso" type="text" name="peso" placeholder="Peso"
+									class="form-control"> <label for="peso"></label>
+							</div>
+
+
+							<div class="form-label-group">
+								<input id="talla" type="text" name="talla" placeholder="Talla"
+									class="form-control"> <label for="tallas"></label>
+							</div>
+						
+							<input id="boton" type="submit" class="btn btn-primary" value="Calcular">
+							
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+    </div>
+    <br><br><br><br><br><br>
+	<p style="color:red; font-size:18px;text-align:center"> Universidad Aut&oacute;noma De La Ciudad De
+		M&eacute;xico</p>
+
+
+	<th:block th:insert="index::script"></th:block>
+</body>
+
+</html>
