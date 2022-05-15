@@ -18,9 +18,12 @@
 			<div class="collapse navbar-collapse" id="navbarSupportedContent">
 				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 					<li class="nav-item"><a class="nav-link active" aria-current="page" th:href="@{/}">Home</a></li>
-					<li class="nav-item"><a class="nav-link" th:href="@{/}">Ejercicios </a></li>
-					<li class="nav-item"><a class="nav-link" th:href="@{/}">Que consumo? </a></li>
 					<li class="nav-item"><a class="nav-link" th:href="@{/usuario/logout}">Cerrar Sesi&oacute;n</a></li>
+					<li class="nav-item"><a class="nav-link" th:href="@{/}">Padecimientos </a></li>
+					<li class="nav-item"><a class="nav-link" th:href="@{/}">Ejercicios </a></li>
+					<li class="nav-item"><a class="nav-link" th:href="@{/}">Platillos </a></li>
+					<li class="nav-item"><a class="nav-link" th:href="@{/}">&iquest;Qu&eacute; consumo? </a></li>
+					
 				</ul>
 			</div>
 		</div>
@@ -29,19 +32,19 @@
 		<div class="row">
 			 <div class="col-sm-3 mx-auto">	
 			 
-				<h2 style="color:red;"> Calculo de IMC</h2> <br> 
-				<form id="forma-calculo" th:action="@{/usuario/registro}" method="get">
+				<h2 style="color:red;"> Calcular mi IMC</h2> <br> 
+				<form id="forma-calculo" th:action="@{/usuario/calculo}" method="get">
               <br>
 					<div class="card">
 						<div class="card-body">
 							<div class="form-label-group">
-								<input id="peso" type="text" name="peso" placeholder="Peso"
+								<input id="peso" type="text" name="peso" placeholder="Peso (Kg)"
 									class="form-control"> <label for="peso"></label>
 							</div>
 
 
 							<div class="form-label-group">
-								<input id="talla" type="text" name="talla" placeholder="Talla"
+								<input id="talla" type="text" name="talla" placeholder="Talla (m)"
 									class="form-control"> <label for="tallas"></label>
 							</div>
 						
@@ -54,9 +57,38 @@
 		</div>
     </div>
     <br><br><br><br><br><br>
-	<p style="color:red; font-size:18px;text-align:center"> Universidad Aut&oacute;noma De La Ciudad De
+	<p style="color:red; font-size:20px;text-align:center"> Universidad Aut&oacute;noma De La Ciudad De
 		M&eacute;xico</p>
+		<br>
+    <p style="color:red; font-size:23px;text-align:center"> R&A</p>
+	<!-- Modal -->
+	<div class="modal fade" id="modalExitosoError" tabindex="-1"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Mensaje</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<div id="modalMensaje">
+						<th:block if="${mensajeExitoso != null}">
+							<p>[[${mensajeExitoso}]]</p>
+						</th:block>
+						<th:block if="${mensajeError != null}">
+							<p>[[${mensajeError}]]</p>
+						</th:block>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-success"
+						data-bs-dismiss="modal">Aceptar</button>
 
+				</div>
+			</div>
+		</div>
+	</div>
 
 	<th:block th:insert="index::script"></th:block>
 </body>

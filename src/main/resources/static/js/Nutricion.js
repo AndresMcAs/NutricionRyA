@@ -37,7 +37,10 @@ $(document).ready(function () {
 		return this.optional(element) || /^[a-z\s]+$/i.test(value);
 	}, "Solo letras y espacios");
 
-
+   jQuery.validator.addMethod("cents", function(value, element) {
+        return this.optional(element) || /^\d{0,12}(\.\d{0,2})?$/i.test(value); 
+    }, "You must include two decimal places");
+    
 	jQuery.extend(jQuery.validator.messages, {
 		required: "Este campo es obligatorio.",
 		remote: "Por favor, rellena este campo.",
@@ -54,8 +57,9 @@ $(document).ready(function () {
 		minlength: jQuery.validator.format("Por favor, no escribas menos de {0} caracteres."),
 		rangelength: jQuery.validator.format("Por favor, escribe un valor entre {0} y {1} caracteres."),
 		range: jQuery.validator.format("Por favor, escribe un valor entre {0} y {1}."),
-		max: jQuery.validator.format("Por favor, escribe un valor menor o igual a {0}."),
-		min: jQuery.validator.format("Por favor, escribe un valor mayor o igual a {0}.")
+		max: jQuery.validator.format("Por favor, escribe un valor menor de {0}"),
+		min: jQuery.validator.format("Por favor, escribe un valor mayor a {0}.")
+		
 	});
 
 	// ***************** Formularios ***************************************************
@@ -157,15 +161,53 @@ $(document).ready(function () {
 
 	});
 
+  	
+	$("#forma-calculo").submit(function (e) {
 
+		e.preventDefault();
+
+	}).validate({
+		rules: {
+			peso: {
+				required: true,
+				min:1,
+				max:250,
+				cents: true
+				
+			},
+			talla: {
+				required:true,
+				min:0.20,
+				cents: true
+			}
+		},
+		errorPlacement: function (error, element) {
+			error.appendTo(element.parent());
+		},
+		submitHandler: function (form) {
+
+			var peso = $("#peso").val();
+			var talla = $("#talla").val();
+
+       //peso y talla del usuario 
+			$.get("/usuario/calculo", { 'peso': peso, 'talla': talla }, function (fragmento) {
+
+				$('#modalMensaje').replaceWith(fragmento);
+
+				var myModal = bootstrap.Modal.getOrCreateInstance(document.querySelector('#modalExitosoError'));
+				myModal.show();
+
+
+
+			});
+
+			return false;
+		}
+
+	});
 	
-	
-	// eliminacion de actividades 
 
 	//************************** */ funciones *****************	
-
-
-	
 
 	getUsuario = function (selectObject) {
 		var value = selectObject.value;

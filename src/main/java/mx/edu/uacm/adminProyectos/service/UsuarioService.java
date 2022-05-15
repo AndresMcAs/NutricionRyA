@@ -16,8 +16,9 @@ public interface UsuarioService {
 	  * @return Objeto usuario
 	  */
 	  Usuario obtenerUsuarioPorCorreoYContrasenia(String correo, String contrasenia);
-		
 	  Usuario registrarUsuario(Usuario usuario) throws AplicacionExcepcion;
-
 	  List<Usuario> obtenerUsuarios();
-	}
+	  double calcularIMC(Usuario usuario) throws AplicacionExcepcion;
+      Usuario modificarUsuario(Usuario usuario) throws Exception;	
+      Usuario buscarUsuario(Long id) throws Exception;
+}

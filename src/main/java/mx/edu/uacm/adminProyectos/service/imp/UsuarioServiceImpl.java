@@ -22,7 +22,9 @@ public class UsuarioServiceImpl implements UsuarioService {
 	private UsuarioRepository usuarioRepository;
 	
     @Autowired
-    private PasswordEncoder passwordEncoder;    
+    private PasswordEncoder passwordEncoder;   
+    private Usuario usuarioM;
+   
 	/**
 	 * {@link mx.edu.uacm.progweb.evaluacionanonima.service.UsuarioService#obtenerUsuarioPorCorreoYContrasenia(String, String)}
 	 */
@@ -71,5 +73,43 @@ public class UsuarioServiceImpl implements UsuarioService {
 		
 		return (List<Usuario>)usuarioRepository.findAll();
 	}
+
+	@Override
+	public double calcularIMC(Usuario usuario) throws AplicacionExcepcion {
+		// TODO Auto-generated method stub
+		return usuario.CalculoIMC();
+	}
+  
+	 @Override
+	  public Usuario modificarUsuario(Usuario usuario) throws Exception {
+		  
+	    Usuario usuarioGuardar = buscarUsuario(usuario.getId());
+	    modificar(usuario,usuarioGuardar);
+	    return usuarioRepository.save(usuarioGuardar);
+		
+	  }
+	  
+	  private  void modificar(Usuario usuario1 , Usuario usuario2) throws AplicacionExcepcion {
+		  usuario2.setNombre(usuario2.getNombre());
+		  usuario2.setApellidoPat(usuario2.getApellidoPat());
+		  usuario2.setApellidoMat(usuario2.getApellidoMat());
+		  usuario2.setCorreo(usuario2.getCorreo());
+		  usuario2.setContrasenia(usuario2.getContrasenia());
+		  usuario2.setPeso(usuario1.getPeso());
+		  usuario2.setTalla(usuario1.getTalla());
+		  usuario2.setImc(usuario1.getImc());
+	  }
+
+	@Override
+	public Usuario buscarUsuario(Long id) throws Exception {
+		try {	
+		      usuarioM = usuarioRepository.findById(id).get(); 
+		    } catch (DataAccessException e) {
+		      throw new AplicacionExcepcion("Error");
+		    }
+		    return usuarioM;
+	}
+	 
+	
 
 }
