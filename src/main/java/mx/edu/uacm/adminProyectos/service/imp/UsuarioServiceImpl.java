@@ -95,9 +95,11 @@ public class UsuarioServiceImpl implements UsuarioService {
 		  usuario2.setApellidoMat(usuario2.getApellidoMat());
 		  usuario2.setCorreo(usuario2.getCorreo());
 		  usuario2.setContrasenia(usuario2.getContrasenia());
+		  //modificacion de datos
 		  usuario2.setPeso(usuario1.getPeso());
 		  usuario2.setTalla(usuario1.getTalla());
 		  usuario2.setImc(usuario1.getImc());
+		  usuario2.setEstado(usuario1.getEstado());
 	  }
 
 	@Override

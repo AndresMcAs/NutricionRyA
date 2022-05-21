@@ -219,7 +219,7 @@ $(document).ready(function () {
 	// obtencion de los usuarios para el select de evaluación 
 	obtenerUsuarioSelect = function () {
 
-		$.get("/usuario/buscar", {}, function (fragmento) {
+		$.get("/usuario/mostrarUsuario", {}, function (fragmento) {
 
 			var newDoc = document.open("text/html", "replace");
 			newDoc.write(fragmento);

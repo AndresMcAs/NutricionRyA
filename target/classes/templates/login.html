@@ -7,8 +7,6 @@
 
 <body style="background-color:white" background="https://media.istockphoto.com/photos/new-year-for-new-healthy-2021-fresh-vegetable-salad-and-healthy-food-picture-id1285089951?k=20&m=1285089951&s=612x612&w=0&h=shfHxZND_yITWXcyUKloX6HVWFwZF-IYw4eJhsUbA3g=">
 
-
-
 	<nav th:insert="index::navbar"></nav>
 
 	<div id="contenedor" class="container">
@@ -17,32 +15,39 @@
 			<div class="col-sm-4 mx-auto">
 
 				<div th:if="${#servletContext.getAttribute('errorMensaje') != null}">
-					<div class="alert alert-danger alert-dismissible fade show" role="alert">
+					<div class="alert alert-danger alert-dismissible fade show"
+						role="alert">
 						<strong>[[${#servletContext.getAttribute('errorMensaje')}]]</strong>
-						<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+						<button type="button" class="btn-close" data-bs-dismiss="alert"
+							aria-label="Close"></button>
 					</div>
 
 				</div>
-                <br><br><br><br>
+				<br>
+				<br>
+				<br>
+				<br>
 
 				<form id="forma-login" th:action="@{/usuario/login}" method="post">
 					<div class="p-3 mb-2 bg-light text-white">
-						<h2 style="color:blue;">Inicia sesi&oacute;n</h2>
+						<h2 style="color: blue;">Inicia sesi&oacute;n</h2>
 						<div class="card">
 							<div class="card-body">
-								
+
 								<div class="form-label-group">
-									<input id="correo" type="text" name="correo" placeholder=" Correo"
-										class="form-control"> <label for="correo"></label>
+									<input id="correo" type="text" name="correo"
+										placeholder=" Correo" class="form-control"> <label
+										for="correo"></label>
 								</div>
 
 
 								<div class="form-label-group">
 									<input id="contrasenia" type="password" name="contrasenia"
-										placeholder="Contrase&ntilde;a" class="form-control"> <label
-										for="contrasenia"></label>
+										placeholder="Contrase&ntilde;a" class="form-control">
+									<label for="contrasenia"></label>
 								</div>
-								<input id="boton" type="submit" class="btn btn-primary" value="Iniciar">
+								<input id="boton" type="submit" class="btn btn-primary"
+									value="Iniciar">
 							</div>
 						</div>
 					</div>

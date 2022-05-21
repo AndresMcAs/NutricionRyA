@@ -28,6 +28,7 @@ public class Usuario {
 	private double peso;
 	private double talla;
 	private double imc;
+	private String estado;
 
 	public Usuario() {
 

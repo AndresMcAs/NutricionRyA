@@ -1,13 +1,11 @@
 package mx.edu.uacm.adminProyectos.controller;
 
-import java.util.List;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import mx.edu.uacm.adminProyectos.AplicacionExcepcion;
 import mx.edu.uacm.adminProyectos.dominio.Usuario;
 import mx.edu.uacm.adminProyectos.service.UsuarioService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -55,12 +53,13 @@ public class UsuarioController {
 
 		if (log.isDebugEnabled())
 			log.debug("> Entrando al metodo iniciarSesion <");
-		Usuario usuario = usuarioService.obtenerUsuarioPorCorreoYContrasenia(correo, password);
+		    Usuario usuario = usuarioService.obtenerUsuarioPorCorreoYContrasenia(correo, password);
 
 		if (usuario != null) {
 			httpSession.setAttribute("usuarioLogueado", usuario);
 			usuarioSesion = usuario;
-			paginaInicio = "redirect:/home";
+			model.addAttribute("usuarioSesion",usuario );
+			paginaInicio = "home";
 
 		} else {
 			servletContext.setAttribute("errorMensaje", "Usuario/Contrasenia no validos");
@@ -115,20 +114,20 @@ public class UsuarioController {
 	}
 
 	/**
-	 * lista_de_usuarios
 	 * 
 	 * @param model
+	 * @param usuario
 	 * @return
+	 * @throws AplicacionExcepcion
 	 */
-	@GetMapping("/buscar")
-	public String buscar(Model model) {
-		if (log.isDebugEnabled())
-			log.debug("entrando a buscar usuarios ");
-		List<Usuario> usuarios = usuarioService.obtenerUsuarios();
-		model.addAttribute("usuarios", usuarios);
-		return "home-revision";
-		// evaluacion
-
+	@GetMapping("/mostrarUsuario")
+	public String mostrarUsuario(Model model) throws AplicacionExcepcion {
+		if (log.isDebugEnabled()) {
+			log.debug("> Entrando a usuariocontroller.buscaUsuario");
+			
+		}
+		model.addAttribute("usuarioSesion",usuarioSesion );
+		return "home";
 	}
 
 	/*
@@ -140,7 +139,7 @@ public class UsuarioController {
 	 * @return
 	 */
 	@GetMapping("/calculo")
-	public String calculoImc(Model model, Usuario usuario, double talla, double peso) throws AplicacionExcepcion{
+	public String calculoImc(Model model, Usuario usuario, double talla, double peso) throws Exception {
 		if (log.isDebugEnabled()) {
 			log.debug(">Entrando a usuarioController calculo imc");
 			log.debug("Usuario {}", usuario);
@@ -150,19 +149,56 @@ public class UsuarioController {
 			usuario = usuarioSesion;
 			usuario.setPeso(peso);
 			usuario.setTalla(talla);
-			usuario.setImc(usuarioService.calcularIMC(usuario));
+			double imcC = Double.parseDouble( String.format("%.2f",usuarioService.calcularIMC(usuario)));
+			usuario.setImc(imcC);
 			usuario.getImc();
-			usuarioService.modificarUsuario(usuario);
+			
+			
+			if (usuario.getImc() < 18.5) {
+				//"\n Bajo peso"
+				model.addAttribute("mensajeExitoso", usuario.getNombre() + " " + usuario.getApellidoPat()
+						+ "\n tu IMC es: " + String.format("%.2f", usuario.getImc()));
+				usuario.setEstado("Bajo Peso");
+			}
 
-			if (usuario.getImc() != 0)
-				model.addAttribute("mensajeExitoso", usuario.getNombre() +" " + 
-			        usuario.getApellidoPat()+"\n tu IMC es: " + String.format("%.2f", usuario.getImc()) );
+			else if (usuario.getImc() < 24.9) {
+				//+ "\n Peso Normal"
+				model.addAttribute("mensajeExitoso", usuario.getNombre() + " " + usuario.getApellidoPat()
+						+ "\n tu IMC es: " + String.format("%.2f", usuario.getImc()) );
+				usuario.setEstado("Peso Normal");
+			}
+
+			else if (usuario.getImc() < 29.9) {
+				// "\n Sobre Peso"
+				model.addAttribute("mensajeExitoso", usuario.getNombre() + " " + usuario.getApellidoPat()
+						+ "\n tu IMC es: " + String.format("%.2f", usuario.getImc()) );
+				usuario.setEstado("Sobre Peso");
+			} else if (usuario.getImc() < 34.9) {
+				// + "\n Obesidad Grado1"
+				model.addAttribute("mensajeExitoso", usuario.getNombre() + " " + usuario.getApellidoPat()
+						+ "\n tu IMC es: " + String.format("%.2f", usuario.getImc()));
+				usuario.setEstado("Obesidad Grado1");
+			} else if (usuario.getImc() < 39.9) {
+				//+ "\n Obesidad Grado2"
+				model.addAttribute("mensajeExitoso", usuario.getNombre() + " " + usuario.getApellidoPat()
+						+ "\n tu IMC es: " + String.format("%.2f", usuario.getImc()) );
+				usuario.setEstado("Obesidad Grado2");
+			} else if (usuario.getImc() >= 40) {
+				//"\n Obesidad Grado3"
+				model.addAttribute("mensajeExitoso", usuario.getNombre() + " " + usuario.getApellidoPat()
+						+ "\n tu IMC es: " + String.format("%.2f", usuario.getImc()) );
+				usuario.setEstado("Obesidad Grado3");
+			}
+			usuarioService.modificarUsuario(usuario);
 		} catch (AplicacionExcepcion e) {
 			log.error(e.getMessage());
 			model.addAttribute("mensajeError", e.getMessage());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally {
+
+			model.addAttribute("usuarioSesion", usuario);
 		}
 
 		return "home::#modalMensaje";
