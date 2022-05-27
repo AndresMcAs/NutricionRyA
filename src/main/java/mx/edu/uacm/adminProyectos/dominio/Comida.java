@@ -10,6 +10,7 @@ import lombok.Data;
 @Entity
 @Data
 public class Comida {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -17,6 +18,7 @@ public class Comida {
 	private String porcion;
 	private String calorias;
 	
+	public Comida() {}
 	public Comida(String nombre, String porcion, String calorias) {
 		super();
 		this.nombre = nombre;

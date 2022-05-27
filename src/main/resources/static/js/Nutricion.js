@@ -206,20 +206,62 @@ $(document).ready(function () {
 
 	});
 	
-
-	//************************** */ funciones *****************	
-
-	getUsuario = function (selectObject) {
-		var value = selectObject.value;
-		console.log(value);
-	}
-
 	
+	$("#forma-busqueda").submit(function (e) {
 
-	// obtencion de los usuarios para el select de evaluación 
-	obtenerUsuarioSelect = function () {
+		e.preventDefault();
 
-		$.get("/usuario/mostrarUsuario", {}, function (fragmento) {
+	}).validate({
+		rules: {
+			comida: {
+				required: true
+				
+			}
+		},
+		errorPlacement: function (error, element) {
+			error.appendTo(element.parent());
+		},
+		submitHandler: function (form) {
+
+			var comida = $("#comida").val();
+			
+
+                         //atributo en clase comida/ atributo en form
+			$.get("/comida/buscacomida", { 'nombre': comida}, function (fragmento) {
+
+				$('#modalMensaje').replaceWith(fragmento);
+
+				var myModal = bootstrap.Modal.getOrCreateInstance(document.querySelector('#modalExitosoError'));
+				myModal.show();
+
+
+
+			});
+
+			return false;
+		}
+
+	});
+	
+  
+	
+	//************************** */ funciones *****************	
+  
+  
+	
+    obtenerAlimentos = function () {
+
+		$.get("/comida/listarcomida", {}, function (fragmento) {
+
+			var newDoc = document.open("text/html", "replace");
+			newDoc.write(fragmento);
+			newDoc.close();
+		});
+	};
+   
+    obtenerUsuario = function () {
+
+		$.get("/usuario/mostrarusuario", {}, function (fragmento) {
 
 			var newDoc = document.open("text/html", "replace");
 			newDoc.write(fragmento);
@@ -228,25 +270,18 @@ $(document).ready(function () {
 	};
 
 
+});
+
+
+
+
+obtenerComidaPaginados = function(pagina) {
 	
 
-
-});
-
-//borrar usuario
-$(document).ready(function (params) {
-	$(".link-delete").on("click", function (e) {
-		e.preventDefault();
-		//alert($(this).attr("href"));
-		link = $(this);
-		usuarioId = link.attr("usuarioId");
-		$("#siButton").attr("href", link.attr("href"));
-		$("#confirmText").text("¿Estás seguro de que quieres eliminar el ID " + usuarioId + "?");
-		$("#modalBorrar").modal();
-	});
-});
-
-
+	$.get("/comida/comidaPaginado", {page: pagina}, function( fragmento ) {
+ 			$("#resultado").replaceWith(fragmento);
+		});
+	};
 
 
 

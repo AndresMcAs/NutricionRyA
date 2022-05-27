@@ -1,5 +1,8 @@
 package mx.edu.uacm.adminProyectos.service.imp;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import lombok.extern.slf4j.Slf4j;
@@ -13,24 +16,28 @@ public class EjercicioServiceImpl implements EjercicioService {
 	
 	@Autowired
 	private EjercicioRepository ejercicioRepository;
-	 	
+	private List <Ejercicio> listaEjercicios;
+	
+	@Override
 	public Ejercicio obtenerEjercicioEstado(String estado) {
 		
 		if(log.isDebugEnabled())
-			log.debug("> Entrando a UsuarioServiceImpl.obtenerUsuarioPorCorreoYContrasenia()");
-		
-		Ejercicio ejercicioRecuperado = ejercicioRepository.findByEstado(estado);
-		
-		log.debug("usuario recuperado: " + ejercicioRecuperado);
-		
-		if(ejercicioRecuperado != null && ejercicioRecuperado.getEstado().equals(estado)) {
-			
-			return ejercicioRecuperado;
-		} else {
-			
+			log.debug("> entrando a EjercicioService.obtenerEjercicio");
+		 Ejercicio ejercicioEstado =ejercicioRepository.findByEstado(estado);
+		if (ejercicioEstado != null)
+		 return ejercicioEstado;
+		else 
 			return null;
-		}
-
 	}
-	
+    /**
+     * lista todos lo ejercicio registrados
+     */
+	@Override
+	public List<Ejercicio> obtenerEjercicios() {
+		listaEjercicios = new ArrayList<>();
+		listaEjercicios =(List<Ejercicio>) ejercicioRepository.findAll();
+		return listaEjercicios;
+	}
+		
+
 }

@@ -16,14 +16,14 @@ public class Ejercicio {
 	private Long id;
 	private String estado;
 	private String ejercicioAerobico;
-	private String ejerccioFuerza;
+	private String ejercicioFuerza;
 	private String ejercicioFlexibilidad;
-	
-	public Ejercicio(String estado,String ejercicioAerobico, String ejerccioFuerza, String ejercicioFlexibilidad) {
+	public Ejercicio() {}
+	public Ejercicio(String estado,String ejercicioAerobico, String ejercicioFuerza, String ejercicioFlexibilidad) {
 		super();
 		this.estado= estado;
 		this.ejercicioAerobico = ejercicioAerobico;
-		this.ejerccioFuerza = ejerccioFuerza;
+		this.ejercicioFuerza = ejercicioFuerza;
 		this.ejercicioFlexibilidad = ejercicioFlexibilidad;
 	}
    
